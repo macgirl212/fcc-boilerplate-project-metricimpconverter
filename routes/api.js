@@ -17,19 +17,43 @@ module.exports = function (app) {
 				inputNum = '1';
 			}
 
+			if (inputUnit === undefined) {
+				return res.status(200).send('invalid unit');
+			}
+
 			const num = convertHandler.getNum(inputNum);
 			const unit = convertHandler.getUnit(inputUnit);
+
+			// error messages
+			if (num === 'invalid number' && unit === 'invalid unit') {
+				return res.status(200).send('invalid number and unit');
+			}
+
+			if (num === 'invalid number') {
+				return res.status(200).send('invalid number');
+			}
+
+			if (unit === 'invalid unit') {
+				return res.status(200).send('invalid unit');
+			}
+
 			const returnUnit = convertHandler.getReturnUnit(unit);
 			const firstSpelledUnit = convertHandler.spellOutUnit(unit);
 			const secondSpelledUnit = convertHandler.spellOutUnit(returnUnit);
 			const convertedNum = convertHandler.convert(num, unit);
-
-			const stringMessage = `${num} ${firstSpelledUnit} converts to ${convertedNum.toFixed(
-				5
-			)} ${secondSpelledUnit}`;
-			res
-				.status(200)
-				.json({ initNum: num, initUnit: unit, string: stringMessage });
+			const stringMessage = convertHandler.getString(
+				num,
+				firstSpelledUnit,
+				convertedNum,
+				secondSpelledUnit
+			);
+			res.status(200).json({
+				initNum: num,
+				initUnit: unit,
+				returnNum: convertedNum,
+				returnUnit: returnUnit,
+				string: stringMessage,
+			});
 		} catch (error) {
 			console.log(error);
 		}

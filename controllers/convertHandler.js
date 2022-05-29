@@ -2,8 +2,19 @@ function ConvertHandler() {
 	this.getNum = function (input) {
 		let numToVerify = input;
 
+		// checks if valid
+		if (!numToVerify.match(/^\d*(\.\d)?(\/\d(\.\d)?)?$/)) {
+			return 'invalid number';
+		}
+
 		// check for fractions
 		if (numToVerify.match(/\d\/\d$/)) {
+			const splitNum = numToVerify.split('/');
+			let result = splitNum[0] / splitNum[1];
+			return result;
+		}
+
+		if (numToVerify.match(/^\d\/\d/)) {
 			const splitNum = numToVerify.split('/');
 			let result = splitNum[0] / splitNum[1];
 			return result;
@@ -15,12 +26,25 @@ function ConvertHandler() {
 
 	this.getUnit = function (input) {
 		// makes sure all units from input is lowercase except liters
-		let result = input.toLowerCase();
+		let unitToVerify = input.toLowerCase();
 
-		if (result === 'l') {
-			result = 'L';
+		if (unitToVerify === 'l') {
+			unitToVerify = 'L';
 		}
-		return result;
+
+		// checks if valid
+		switch (unitToVerify) {
+			case 'gal':
+			case 'kg':
+			case 'km':
+			case 'L':
+			case 'lbs':
+			case 'mi':
+				const result = unitToVerify;
+				return result;
+			default:
+				return 'invalid unit';
+		}
 	};
 
 	this.getReturnUnit = function (initUnit) {
@@ -86,22 +110,28 @@ function ConvertHandler() {
 		switch (initUnit) {
 			case 'gal':
 				result = initNum * galToL;
-				return result;
+				result = result.toFixed(5);
+				return Number(result);
 			case 'kg':
 				result = initNum / lbsToKg;
-				return result;
+				result = result.toFixed(5);
+				return Number(result);
 			case 'km':
 				result = initNum / miToKm;
-				return result;
+				result = result.toFixed(5);
+				return Number(result);
 			case 'L':
 				result = initNum / galToL;
-				return result;
+				result = result.toFixed(5);
+				return Number(result);
 			case 'lbs':
 				result = initNum * lbsToKg;
-				return result;
+				result = result.toFixed(5);
+				return Number(result);
 			case 'mi':
 				result = initNum * miToKm;
-				return result;
+				result = result.toFixed(5);
+				return Number(result);
 			default:
 				console.error('Invalid computation');
 				return result;
@@ -109,8 +139,7 @@ function ConvertHandler() {
 	};
 
 	this.getString = function (initNum, initUnit, returnNum, returnUnit) {
-		let result;
-
+		const result = `${initNum} ${initUnit} converts to ${returnNum} ${returnUnit}`;
 		return result;
 	};
 }

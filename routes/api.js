@@ -12,15 +12,6 @@ module.exports = function (app) {
 			// splits the input into number and unit
 			let [inputNum, inputUnit] = input.split(/^(.*\d)?(\w+)$/).slice(1, -1);
 
-			// if input number does not exist, default to "1"
-			if (inputNum === undefined) {
-				inputNum = '1';
-			}
-
-			if (inputUnit === undefined) {
-				return res.status(200).send('invalid unit');
-			}
-
 			const num = convertHandler.getNum(inputNum);
 			const unit = convertHandler.getUnit(inputUnit);
 

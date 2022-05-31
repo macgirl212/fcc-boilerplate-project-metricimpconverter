@@ -1,5 +1,10 @@
 function ConvertHandler() {
 	this.getNum = function (input) {
+		// if input number does not exist, default to "1"
+		if (input === undefined) {
+			input = '1';
+		}
+
 		let numToVerify = input;
 
 		// checks if valid
@@ -25,6 +30,11 @@ function ConvertHandler() {
 	};
 
 	this.getUnit = function (input) {
+		// if no unit, return an error message
+		if (input === undefined) {
+			return 'invalid unit';
+		}
+
 		// makes sure all units from input is lowercase except liters
 		let unitToVerify = input.toLowerCase();
 
